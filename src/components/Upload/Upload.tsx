@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import { Button } from '../Button';
+import UploadFormlet from './UploadFormlet';
 import {UploadArea} from './styles';
 
 const Upload: React.FC<{handleFileUpload: (files: FileList) => void}> = ({handleFileUpload}) => {
 
-    const [draggingOver, setDraggingOver] = useState<Boolean>(false);
+    const [draggingOver, setDraggingOver] = useState<boolean>(false);
     
     const dragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -34,7 +35,7 @@ const Upload: React.FC<{handleFileUpload: (files: FileList) => void}> = ({handle
         onDrop={fileDrop}
         draggingOver={draggingOver}
         >
-            <p>Drag and artwork here or <Button onClick={() => {}} tier='secondary'>upload</Button></p>
+            <p>Drag artwork here or <UploadFormlet handleUpload={handleFileUpload} /></p>
         </UploadArea>
     );
 };

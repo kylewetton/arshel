@@ -2,6 +2,9 @@ import { TextureLoader, MeshBasicMaterial, Mesh, Object3D } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
 
+const debugMode = true;
+const debugIP = '192.168.1.2';
+
 export const downloadFile = (scene: Object3D) => {
     const exporter = new GLTFExporter();
     exporter.parse(scene, function (glb) {
@@ -41,8 +44,8 @@ export const generateAr = (scene: Object3D) => {
 }
 
 export const generateQr = (file: string) => {
-    const base = window.location.origin;
-    const api = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${base}/${file}`;
+    const base = debugMode ? `http://${debugIP}:3000` : window.location.origin;
+    const api = `https://api.qrserver.com/v1/create-qr-code/?format=svg&color=E11D48&size=600x600&data=${base}/${file}`;
     return api;
 }
 
