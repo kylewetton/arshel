@@ -1,9 +1,9 @@
 import React from 'react';
 import {Image} from './style';
 
-const Preview: React.FC<{url: string}> = ({url}) => {
+const Preview: React.FC<{url: string, handleOnLoad: () => void}> = ({url, handleOnLoad}) => {
     return (
-        <Image src={url} alt=""/>
+        <Image onLoad={handleOnLoad} src={url} alt=""/>
     );
 };
 

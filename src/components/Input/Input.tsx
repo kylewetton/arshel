@@ -1,20 +1,19 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {InputStyled, InputWrapper, MainLabel} from './styles';
 
 interface InputInterface {
     label: string;
-    placeholder?: string;
+    handleValue: (val: number) => void;
+    value: number;
     inputId: string;
     unit?: string;
     type?: "number" | "text";
 }
 
-const Input: React.FC<InputInterface> = ({label, inputId, placeholder, unit, type = "number"}) => {
-
-    const [inputVal, setInputVal] = useState('30');
+const Input: React.FC<InputInterface> = ({label, handleValue, inputId, value, unit, type = "number"}) => {
 
     const handleChange = (val: string) => {
-        setInputVal(val);
+        handleValue(+val);
     }
 
     return (
@@ -22,9 +21,9 @@ const Input: React.FC<InputInterface> = ({label, inputId, placeholder, unit, typ
             <MainLabel htmlFor={`#${inputId}`}>{label}</MainLabel>
             <InputStyled
                 onChange={(e) => handleChange(e.target.value)}
-                value={inputVal} 
+                value={value} 
                 id={`#${inputId}`} 
-                placeholder={placeholder} 
+                placeholder={`${value}`} 
                 type={type} />
             <label htmlFor={`#${inputId}`}>{unit}</label>
         </InputWrapper>

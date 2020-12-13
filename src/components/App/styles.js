@@ -11,7 +11,7 @@ export const MainWrapper = styled.main`
 
 export const Frame = styled.div`
 box-shadow: ${boxShadow.md};
-border: ${spacing[2]} solid ${colours.gray[400]};
+border: ${spacing[2]} solid ${colours.gray[200]};
 border-radius: ${radius.sm};
 position: relative;
 &:before {
