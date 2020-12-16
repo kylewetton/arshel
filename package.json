@@ -1,6 +1,6 @@
 {
-  "name": "arshel",
-  "version": "0.1.0",
+  "name": "portrayal",
+  "version": "1.0.0",
   "proxy": "http://localhost:5000",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
