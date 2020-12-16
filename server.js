@@ -5,6 +5,7 @@ const shell = require('shelljs');
 const findRemoveSync = require('find-remove');
 const app = express();
 
+const stat = process.env.NODE_ENV === 'production' ? 'build' : 'public';
 
 const BASEPATH = 'usdpython';
 const PYTHONPATH = process.env.PYTHONPATH;
@@ -15,7 +16,7 @@ let unifiedFileName = '';
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, './public/storage');
+    cb(null, `./${stat}/storage`);
   },
   filename(req, file, cb) {
     unifiedFileName = Date.now();
@@ -25,27 +26,27 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.use(express.static('public'));
+app.use(express.static(stat));
 
 
 app.post('/generate-ar', upload.single('file'), (req, res) => {
     shell.exec(
-        `${CONVERT} public/storage/ar-${unifiedFileName}.glb public/storage/ar-${unifiedFileName}.usdz -metersPerUnit 1`
+        `${CONVERT} ${stat}/storage/ar-${unifiedFileName}.glb build/storage/ar-${unifiedFileName}.usdz -metersPerUnit 1`
     );
     res.json({ name: `${unifiedFileName}` });
     unifiedFileName = '';
 });    
 
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, stat, 'index.html'));
 });
 
 setInterval(() => {
-  const remove = findRemoveSync(__dirname + '/public/storage', {
+  const remove = findRemoveSync(`${__dirname}/${stat}/storage`, {
     age: { seconds: 600 },
     limit: 100,
     extensions: ['.glb', '.usdz']
   });
 }, 360000);
   
-app.listen(process.env.PORT || 5000);
+app.listen(process.env.PORT || 5001);
