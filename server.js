@@ -7,10 +7,8 @@ const app = express();
 
 const stat = process.env.NODE_ENV === 'production' ? 'build' : 'public';
 
-const BASEPATH = 'usdpython';
-const PYTHONPATH = process.env.PYTHONPATH;
-const CONVERT = `${BASEPATH}/usdzconvert/usdzconvert`;
-process.env.PYTHONPATH = `${PYTHONPATH}:${BASEPATH}/USD/lib/python`;
+const CONVERT = `usdpython/usdzconvert/usdzconvert`;
+process.env.PYTHONPATH = `usdpython/USD/lib/python:usdpython/USD/lib/python`;
 
 let unifiedFileName = '';
 
@@ -49,4 +47,4 @@ setInterval(() => {
   });
 }, 360000);
   
-app.listen(process.env.PORT || 5001);
+app.listen(process.env.PORT || 5000);
