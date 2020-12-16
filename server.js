@@ -5,12 +5,14 @@ const shell = require('shelljs');
 const findRemoveSync = require('find-remove');
 const app = express();
 
-const stat = process.env.NODE_ENV === 'production' ? 'build' : 'public';
+const stat = process.env.NODE_ENV === 'development' ? 'build' : 'build';
+const PORT = process.env.NODE_NEV === 'development' ? 5000 : 8080;
+const HOST = '0.0.0.0';
 
 const BASEPATH = 'usdpython';
-const PYTHONPATH = process.env.PYTHONPATH;
+// const PYTHONPATH = process.env.PYTHONPATH;
 const CONVERT = `${BASEPATH}/usdzconvert/usdzconvert`;
-process.env.PYTHONPATH = `${PYTHONPATH}:${BASEPATH}/USD/lib/python`;
+// process.env.PYTHONPATH = `${PYTHONPATH}:${BASEPATH}/USD/lib/python`;
 
 let unifiedFileName = '';
 
@@ -49,4 +51,5 @@ setInterval(() => {
   });
 }, 360000);
   
-app.listen(process.env.PORT || 5001);
+// app.listen(PORT, HOST);
+app.listen(PORT);
