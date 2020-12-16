@@ -5,7 +5,7 @@ const shell = require('shelljs');
 const findRemoveSync = require('find-remove');
 const app = express();
 
-const stat = process.env.NODE_ENV === 'development' ? 'public' : '';
+const stat = process.env.NODE_ENV === 'development' ? 'public' : 'build';
 
 const CONVERT = `usdpython/usdzconvert/usdzconvert`;
 process.env.PYTHONPATH = `usdpython/USD/lib/python:usdpython/USD/lib/python`;
