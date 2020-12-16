@@ -30,7 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "devServe": "nodemon server.js",
-    "start": "NODE_ENV=production node server.js"
+    "start": "node server.js"
   },
   "eslintConfig": {
     "extends": [
