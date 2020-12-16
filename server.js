@@ -5,7 +5,7 @@ const shell = require('shelljs');
 const findRemoveSync = require('find-remove');
 const app = express();
 
-const stat = process.env.NODE_ENV === 'development' ? 'public' : 'build';
+const stat = process.env.NODE_ENV === 'development' ? 'public' : '';
 
 const CONVERT = `usdpython/usdzconvert/usdzconvert`;
 process.env.PYTHONPATH = `usdpython/USD/lib/python:usdpython/USD/lib/python`;
@@ -29,7 +29,7 @@ app.use(express.static(stat));
 
 app.post('/generate-ar', upload.single('file'), (req, res) => {
     shell.exec(
-        `${CONVERT} ${stat}/storage/ar-${unifiedFileName}.glb build/storage/ar-${unifiedFileName}.usdz -metersPerUnit 1`
+        `${CONVERT} ${stat}/storage/ar-${unifiedFileName}.glb ${stat}/storage/ar-${unifiedFileName}.usdz -metersPerUnit 1`
     );
     res.json({ name: `${unifiedFileName}` });
     unifiedFileName = '';
