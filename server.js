@@ -9,10 +9,9 @@ const stat = process.env.NODE_ENV === 'development' ? 'build' : 'build';
 const PORT = process.env.NODE_NEV === 'development' ? 5000 : 8080;
 const HOST = '0.0.0.0';
 
-const BASEPATH = 'usdpython';
-// const PYTHONPATH = process.env.PYTHONPATH;
-const CONVERT = `${BASEPATH}/usdzconvert/usdzconvert`;
-// process.env.PYTHONPATH = `${PYTHONPATH}:${BASEPATH}/USD/lib/python`;
+console.log(process.env.PYTHONPATH);
+
+const CONVERT = `usdpython/usdzconvert/usdzconvert`;
 
 let unifiedFileName = '';
 
