@@ -5,7 +5,7 @@ const shell = require('shelljs');
 const findRemoveSync = require('find-remove');
 const app = express();
 
-const stat = process.env.NODE_ENV === 'production' ? 'build' : 'public';
+const stat = process.env.NODE_ENV === 'development' ? 'public' : 'build';
 
 const CONVERT = `usdpython/usdzconvert/usdzconvert`;
 process.env.PYTHONPATH = `usdpython/USD/lib/python:usdpython/USD/lib/python`;
@@ -47,4 +47,4 @@ setInterval(() => {
   });
 }, 360000);
   
-app.listen(process.env.PORT || 5000);
+app.listen(8080);
