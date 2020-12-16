@@ -8,6 +8,7 @@ export const UploadArea = styled.div<{draggingOver: boolean}>`
     position: relative;
     color: ${colours.rose[500]};
     text-align: center;
+    overflow: hidden;
     * {
         position: relative;
         z-index: 2;
@@ -29,11 +30,13 @@ export const UploadArea = styled.div<{draggingOver: boolean}>`
 
 export  const LabelPill = styled.label`
 background-color: ${colours.gray[200]};
+display: inline-block;
 cursor: pointer;
 color: ${colours.rose[500]};
 padding: ${spacing[2]} ${spacing[3]};
 border-radius: ${radius.sm};
 line-height: 1;
+margin: ${spacing[1]};
 font-size: ${textSize.sm};
 transition: transform 0.25 ease-out;
 &:hover {
@@ -44,4 +47,27 @@ transition: transform 0.25 ease-out;
     box-shadow: ${boxShadow.input};
     transform: translateY(0);
 }
+`
+
+export const ErrorPanel = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: ${spacing[3]};
+    background-color: ${colours.rose[500]};
+    color: ${colours.white};
+    text-center;
+    font-weight: medium;
+    font-size: ${textSize.sm};
+    animation: slideOut 0.5s ease-out 3s forwards;
+
+    @keyframes slideOut {
+        from {
+            top: 0
+        }
+        to {
+            top: -100px;
+        }
+    }
 `

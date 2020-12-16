@@ -1,17 +1,20 @@
 import styled from 'styled-components';
-import {spacing, radius, colours, boxShadow} from '../../theme';
+import {spacing, radius, boxShadow} from '../../theme';
 
 export const MainWrapper = styled.main`
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     padding: ${spacing[10]};
 `
 
-export const Frame = styled.div`
+export const Frame = styled.div<{frameColor: string; includeFrame: boolean}>`
 box-shadow: ${boxShadow.md};
-border: ${spacing[2]} solid ${colours.gray[200]};
+${({includeFrame, frameColor}) => includeFrame ?
+    `border: ${spacing[2]} solid ${frameColor};`
+    : ''}
 border-radius: ${radius.sm};
 position: relative;
 &:before {

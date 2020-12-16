@@ -1,71 +1,115 @@
 import React, {useState} from 'react';
-import { ControlPanelWrapper, ButtonWrapper, InputGroup } from './styles';
+import {BlockPicker, ColorResult} from 'react-color';
+import { ControlPanelWrapper, ButtonWrapper, InputGroup, ScrollTrack, PanelPositioning } from './styles';
 import { Button } from '../Button';
+import {ToggleSwitch} from '../ToggleSwitch';
 import { Input } from '../Input';
-import { compileGlb, generateAr } from '../utils';
-import { Object3D } from 'three';
-
-interface Response {
-    name: string;
-}
+import {HeightLock} from '../AspectLock';
+import {isTouchDevice} from '../../utils';
 
 interface ControlPanelInterface {
-    url: string;
     loadingState: 'waiting' | 'loading' | 'completed'; 
     resetApp: () => void;
-    getArLink: (link: string) => void;
     destroyQr: () => void;
-    handleSetLoading: () => void;
+    launchAr: (w: number, h: number, floor: number) => void;
+    toggleFrame: (state: boolean) => void;
+    frameColor: string;
+    handleFrameColor: (color: ColorResult) => void;
+    aspectRatio: {x: number, y:number} | null;
 }
 
-const ControlPanel: React.FC<ControlPanelInterface> = ({ url, resetApp, getArLink, destroyQr, handleSetLoading, loadingState }) => {
+const ControlPanel: React.FC<ControlPanelInterface> = ({ resetApp, destroyQr, loadingState, launchAr, toggleFrame, frameColor, handleFrameColor, aspectRatio }) => {
 
-    const [ground, setGround] = useState<number>(30);
-    const [width, setWidth] = useState<number>(30);
-    const [height, setHeight] = useState<number>(30);
 
-    const updateGround = (val: number) => {
-        setGround(val);
+    const [floor, setFloor] = useState<number>(1000);
+    const [width, setWidth] = useState<number>(500);
+    const [height, setHeight] = useState<number>(aspectRatio ? 500 * aspectRatio.y : 500);
+    const [aspectLocked, setAspectLocked] = useState<boolean>(true);
+
+
+    /**
+     * 
+     * @param val Height in mm from floor to bottom of the artworks frame
+     */
+
+    const updateFloor = (val: number) => {
+        setFloor(val);
         destroyQr();
     }
+
+    /**
+     * 
+     * @param val Width in mm of the frame
+     */
     const updateWidth = (val: number) => {
         setWidth(val);
-        destroyQr();
-    }
-    const updateHeight = (val: number) => {
-        setHeight(val);
+        if (aspectLocked) {
+            setHeight(aspectRatio ?  val * aspectRatio.y : val);
+        }
         destroyQr();
     }
 
-    const launchAr = () => {
-        handleSetLoading();
-        compileGlb(url, width, height)
-            .then(
-                (file) => generateAr((file as Object3D))
-                .then((data) => {
-                    getArLink(`storage/ar-${(data as Response).name}.usdz`);
-                })
-            );
+    /**
+     * 
+     * @param val Height in mm of the frame
+     */
+    const updateHeight = (val: number) => {
+        setHeight(val);
+        if (aspectLocked) {
+            setWidth(aspectRatio ? val * aspectRatio.x : val);
+        }
+        destroyQr();
+    }
+
+    /**
+     * Toggle whether the aspect ratio should be locked when resizing
+     */
+
+    const handleAspectLock = () => {
+        setAspectLocked(prev => !prev);
     }
 
     return (
-        <ControlPanelWrapper>
-            <InputGroup>
-                <Input handleValue={updateGround} value={ground} unit="mm" label="Height from ground" inputId="ground_height" />
-                <Input handleValue={updateWidth} value={width} unit="mm" label="Width" inputId="real_width" />
-                <Input handleValue={updateHeight} value={height} unit="mm" label="Height" inputId="real_height" />
-            </InputGroup>
-            <ButtonWrapper>
-                <Button onClick={resetApp} tier="secondary">Back</Button>
-                <Button
-                    tier={loadingState === 'loading' ? 'loading' : loadingState === 'completed' ? 'completed' : 'primary'}
-                    onClick={launchAr}
-                    disabled={loadingState !== 'waiting'}
-                    >
-                        {loadingState === 'loading' ? 'Loading...' :
-                        loadingState === 'completed' ? 'Scan QR code': 'Generate AR'}</Button>
-            </ButtonWrapper>
+        <ControlPanelWrapper className={loadingState === 'completed' ? 'completed' : ''}>
+            <PanelPositioning>
+                    <ScrollTrack className={loadingState === 'completed' ? 'completed' : ''}>
+                        <div style={{width: '100%'}}>
+                            <InputGroup>
+                                <h2>Set a few real world dimensions</h2>
+                                <Input handleValue={updateWidth} value={Math.floor(width)} unit="mm" label="Width" inputId="real_width" />
 
+                                <Input handleValue={updateHeight} value={Math.floor(height)} unit="mm" label="Height" inputId="real_height">
+                                    <HeightLock state={aspectLocked} onToggle={() => handleAspectLock()} />
+                                </Input>
+
+                                <Input handleValue={updateFloor} value={floor} unit="mm" label="Height from floor" inputId="floor_height" />
+                            </InputGroup>
+
+                            <InputGroup>
+                                <h2>Adjust the frame</h2>
+                                <ToggleSwitch label="Include frame" defaultChecked={true} onChange={toggleFrame} />
+                                <BlockPicker
+                                    color={frameColor}
+                                    onChange={handleFrameColor}
+                                    triangle='hide'
+                                    colors={['#FAFAFA', '#1f1e1e', '#b0b0b0', '#c2b99b', '#545042']}
+                                />
+                            </InputGroup>
+                        </div>
+                    </ScrollTrack>
+                    <ButtonWrapper>
+                            <Button onClick={resetApp} tier="secondary">Back</Button>
+                            <Button
+                                tier={loadingState === 'loading' ? 'loading' : loadingState === 'completed' ? 'completed' : 'primary'}
+                                onClick={() => launchAr(width, height, floor)}
+                                disabled={loadingState !== 'waiting'}
+                                >
+                                    {loadingState === 'loading' ? 'Loading...' :
+                                    loadingState === 'completed' ?
+                                    isTouchDevice() ? 'Ready' : 'Scan QR code':
+                                    'Generate AR'}</Button>
+                    </ButtonWrapper>
+                </PanelPositioning>
         </ControlPanelWrapper>
     );
 };

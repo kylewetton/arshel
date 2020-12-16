@@ -9,7 +9,7 @@ const app = express();
 const BASEPATH = 'usdpython';
 const PYTHONPATH = process.env.PYTHONPATH;
 const CONVERT = `${BASEPATH}/usdzconvert/usdzconvert`;
-process.env.PYTHONPATH = `${PYTHONPATH}:${BASEPATH}/USD/lib/python`
+process.env.PYTHONPATH = `${PYTHONPATH}:${BASEPATH}/USD/lib/python`;
 
 let unifiedFileName = '';
 
@@ -39,5 +39,13 @@ app.post('/generate-ar', upload.single('file'), (req, res) => {
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
+setInterval(() => {
+  const remove = findRemoveSync(__dirname + '/public/storage', {
+    age: { seconds: 600 },
+    limit: 100,
+    extensions: ['.glb', '.usdz']
+  });
+}, 360000);
   
-  app.listen(process.env.PORT || 5000);
+app.listen(process.env.PORT || 5000);

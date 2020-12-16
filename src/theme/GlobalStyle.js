@@ -1,5 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
+import { boxShadow } from './boxShadow';
 import {colours} from './colours';
+import { radius } from './radius';
+import { spacing } from './spacing';
+import { textSize } from './textSize';
 
 /**
  * This is base reset created by Tailwind called Preflight.
@@ -7,6 +11,9 @@ import {colours} from './colours';
  */
 
 export const GlobalStyle = createGlobalStyle`
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
 *,
 *::before,
 *::after {
@@ -23,7 +30,7 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-body, html {
+body, html, #root {
   height: 100%;
 }
 
@@ -35,6 +42,7 @@ body {
 
 body {
   font-family:
+    'Poppins',
 		system-ui,
 		-apple-system,
 		'Segoe UI',
@@ -216,7 +224,7 @@ ul {
 }
 
 html {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 1 */
+  font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 1 */
   line-height: 1.5; /* 2 */
 }
 
@@ -308,5 +316,38 @@ img,
 video {
   max-width: 100%;
   height: auto;
+}
+
+.block-picker {
+  margin-top: ${spacing[4]};
+  border-radius: ${radius.sm};
+  overflow: hidden;
+  width: 100% !important;
+  box-shadow: none !important;
+  
+  > div:nth-child(2) {
+    border-radius: 0 !important;
+  }
+
+  > div {
+    width: 100% !important;
+  }
+
+  span > div {
+    box-shadow: ${boxShadow.sm} !important;
+    height: 34px !important;
+    width: 34px !important;
+  }
+
+  input {
+    width: 100% !important;
+    background: ${colours.gray[200]};
+    border: 0 !important;
+    padding: ${spacing[1]} ${spacing[3]} !important;
+    font-size: ${textSize.sm} !important;
+    height: auto !important;
+    color: ${colours.gray[400]} !important;
+    box-shadow none !important;
+  }
 }
 `

@@ -1,9 +1,23 @@
-import React from 'react';
-import {Image} from './style';
+import React, { useRef } from 'react';
+import { Image } from './style';
 
-const Preview: React.FC<{url: string, handleOnLoad: () => void}> = ({url, handleOnLoad}) => {
+/**
+ * The actual image component that either shows the image or the QR code
+ */
+
+interface PreviewInterface {
+    url: string;
+    handleOnLoad: (artworkRef: HTMLImageElement | null) => void
+}
+
+const Preview: React.FC<PreviewInterface> = ({ url, handleOnLoad }) => {
+
+    const artworkRef = useRef<HTMLImageElement>(null);
     return (
-        <Image onLoad={handleOnLoad} src={url} alt=""/>
+        <Image
+            onLoad={() => handleOnLoad(artworkRef.current)}
+            ref={artworkRef}
+            src={url} alt="" />
     );
 };
 

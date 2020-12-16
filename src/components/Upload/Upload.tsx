@@ -1,13 +1,19 @@
 import React, {useState} from 'react';
-import { Button } from '../Button';
 import UploadFormlet from './UploadFormlet';
-import {UploadArea} from './styles';
+import {UploadArea, ErrorPanel} from './styles';
 
-const Upload: React.FC<{handleFileUpload: (files: FileList) => void}> = ({handleFileUpload}) => {
+interface UploadInterface {
+    handleFileUpload: (files: FileList) => void;
+    error: string | false;
+    clearError: () => void;
+}
+
+const Upload: React.FC<UploadInterface> = ({error, handleFileUpload, clearError}) => {
 
     const [draggingOver, setDraggingOver] = useState<boolean>(false);
     
     const dragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        clearError();
         e.preventDefault();
     }
     
@@ -24,6 +30,7 @@ const Upload: React.FC<{handleFileUpload: (files: FileList) => void}> = ({handle
     const fileDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         const files = e.dataTransfer.files;
+        setDraggingOver(false);
         handleFileUpload(files);
     }
 
@@ -35,7 +42,8 @@ const Upload: React.FC<{handleFileUpload: (files: FileList) => void}> = ({handle
         onDrop={fileDrop}
         draggingOver={draggingOver}
         >
-            <p>Drag artwork here or <UploadFormlet handleUpload={handleFileUpload} /></p>
+            {error ? <ErrorPanel>{error}</ErrorPanel> : ''}
+            <p>Drag artwork here or <UploadFormlet error={error} onClick={clearError} handleUpload={handleFileUpload} /></p>
         </UploadArea>
     );
 };

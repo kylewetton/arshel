@@ -10,7 +10,7 @@ interface InputInterface {
     type?: "number" | "text";
 }
 
-const Input: React.FC<InputInterface> = ({label, handleValue, inputId, value, unit, type = "number"}) => {
+const Input: React.FC<InputInterface> = ({label, handleValue, inputId, value, unit, type = "number", children}) => {
 
     const handleChange = (val: string) => {
         handleValue(+val);
@@ -19,6 +19,7 @@ const Input: React.FC<InputInterface> = ({label, handleValue, inputId, value, un
     return (
         <InputWrapper>
             <MainLabel htmlFor={`#${inputId}`}>{label}</MainLabel>
+            {children}
             <InputStyled
                 onChange={(e) => handleChange(e.target.value)}
                 value={value} 
