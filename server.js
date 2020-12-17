@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const multer = require('multer');
 const express = require('express');
@@ -5,13 +6,7 @@ const shell = require('shelljs');
 const findRemoveSync = require('find-remove');
 const app = express();
 
-const stat = process.env.NODE_ENV === 'development' ? 'build' : 'build';
-const PORT = process.env.NODE_NEV === 'development' ? 5000 : 8080;
-const HOST = '0.0.0.0';
-
-console.log(process.env.PYTHONPATH);
-
-const CONVERT = `usdpython/usdzconvert/usdzconvert`;
+const stat = process.env.NODE_ENV === 'development' ? 'public' : 'build';
 
 let unifiedFileName = '';
 
@@ -32,7 +27,7 @@ app.use(express.static(stat));
 
 app.post('/generate-ar', upload.single('file'), (req, res) => {
     shell.exec(
-        `${CONVERT} ${stat}/storage/ar-${unifiedFileName}.glb build/storage/ar-${unifiedFileName}.usdz -metersPerUnit 1`
+        `${process.env.CONVERT} ${stat}/storage/ar-${unifiedFileName}.glb ${stat}/storage/ar-${unifiedFileName}.usdz -metersPerUnit 1`
     );
     res.json({ name: `${unifiedFileName}` });
     unifiedFileName = '';
@@ -50,5 +45,4 @@ setInterval(() => {
   });
 }, 360000);
   
-// app.listen(PORT, HOST);
-app.listen(PORT);
+app.listen(process.env.PORT || 5000);

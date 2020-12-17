@@ -11,6 +11,7 @@
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
     "@types/three": "^0.103.2",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "find-remove": "^2.0.3",
     "multer": "^1.4.2",
@@ -29,7 +30,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "devServe": "NODE_ENV=development nodemon server.js",
+    "devServe": "nodemon server.js",
     "start": "node server.js"
   },
   "eslintConfig": {

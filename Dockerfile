@@ -1,4 +1,4 @@
-FROM node:14
+FROM nikolaik/python-nodejs:latest
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -8,7 +8,8 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
-ENV PYTHONPATH=/usr/src/app/usdpython/USD/lib/python:/usr/src/app/usdpython/USD/lib/python
+ENV PYTHONPATH=/usr/src/app/usdpython/USD/lib/python
+ENV CONVERT=usdpython/usdzconvert/usdzconvert
 
 RUN npm install
 # If you are building your code for production
