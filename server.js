@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const multer = require('multer');
 const express = require('express');
@@ -6,11 +7,6 @@ const findRemoveSync = require('find-remove');
 const app = express();
 
 const stat = process.env.NODE_ENV === 'development' ? 'public' : 'build';
-
-// const CONVERT = `/app/usdpython/usdzconvert/usdzconvert`;
-// process.env.PYTHONPATH = `${__dirname}/usdpython/USD/lib/python:${__dirname}/usdpython/USD/lib/python`;
-
-console.log('pythonhost: ' + process.env.PYTHONPATH);
 
 let unifiedFileName = '';
 
