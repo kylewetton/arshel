@@ -7,6 +7,7 @@ const findRemoveSync = require('find-remove');
 const app = express();
 
 const stat = process.env.NODE_ENV === 'development' ? 'public' : 'build';
+const binaryExport = false;
 
 let unifiedFileName = '';
 
@@ -16,7 +17,7 @@ const storage = multer.diskStorage({
   },
   filename(req, file, cb) {
     unifiedFileName = Date.now();
-    cb(null, `ar-${unifiedFileName}.glb`);
+    cb(null, `ar-${unifiedFileName}.${binaryExport ? 'glb' : 'gltf'}`);
   },
 });
 
@@ -27,7 +28,7 @@ app.use(express.static(stat));
 
 app.post('/generate-ar', upload.single('file'), (req, res) => {
     shell.exec(
-        `${process.env.CONVERT} ${stat}/storage/ar-${unifiedFileName}.glb ${stat}/storage/ar-${unifiedFileName}.usdz -metersPerUnit 1`
+        `${process.env.CONVERT} ${stat}/storage/ar-${unifiedFileName}.${binaryExport ? 'glb' : 'gltf'} ${stat}/storage/ar-${unifiedFileName}.usdz -metersPerUnit 1`
     );
     res.json({ name: `${unifiedFileName}` });
     unifiedFileName = '';
@@ -41,7 +42,7 @@ setInterval(() => {
   const remove = findRemoveSync(`${__dirname}/${stat}/storage`, {
     age: { seconds: 600 },
     limit: 100,
-    extensions: ['.glb', '.usdz']
+    extensions:  ['.glb', '.gltf', '.usdz']
   });
 }, 360000);
   

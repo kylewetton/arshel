@@ -2,8 +2,10 @@ import { TextureLoader, MeshBasicMaterial, MeshPhongMaterial, Mesh, Object3D } f
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
 
-const debugMode = false;
-const debugIP = '';
+
+const debugMode = process.env.NODE_ENV === 'development';
+const debugIP = process.env.REACT_APP_IPADD;
+const binaryExport = false;
 
 /**
  * If this has issues, it may be worth looking into it here
@@ -30,7 +32,7 @@ export const downloadFile = (scene: Object3D) => {
 
         link.href = objectURL;
         link.href = URL.createObjectURL(blob);
-        link.download = 'test.glb';
+        link.download = `test.${binaryExport ? 'glb' : 'gltf'}`;
         link.click();
     }, {});
 }
