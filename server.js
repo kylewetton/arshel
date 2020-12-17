@@ -8,7 +8,7 @@ const app = express();
 const stat = process.env.NODE_ENV === 'development' ? 'public' : 'build';
 
 const CONVERT = `usdpython/usdzconvert/usdzconvert`;
-process.env.PYTHONPATH = `usdpython/USD/lib/python:usdpython/USD/lib/python`;
+process.env.PYTHONPATH = `${__dirname}/usdpython/USD/lib/python:${__dirname}usdpython/USD/lib/python`;
 
 let unifiedFileName = '';
 
