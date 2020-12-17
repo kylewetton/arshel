@@ -32,7 +32,7 @@ export const downloadFile = (scene: Object3D) => {
         link.href = URL.createObjectURL(blob);
         link.download = 'test.glb';
         link.click();
-    }, { binary: true });
+    }, {});
 }
 
 /**
