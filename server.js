@@ -7,8 +7,8 @@ const app = express();
 
 const stat = process.env.NODE_ENV === 'development' ? 'public' : 'build';
 
-const CONVERT = `usdpython/usdzconvert/usdzconvert`;
-process.env.PYTHONPATH = `${__dirname}/usdpython/USD/lib/python:${__dirname}/usdpython/USD/lib/python`;
+// const CONVERT = `/app/usdpython/usdzconvert/usdzconvert`;
+// process.env.PYTHONPATH = `${__dirname}/usdpython/USD/lib/python:${__dirname}/usdpython/USD/lib/python`;
 
 console.log('pythonhost: ' + process.env.PYTHONPATH);
 
@@ -31,7 +31,7 @@ app.use(express.static(stat));
 
 app.post('/generate-ar', upload.single('file'), (req, res) => {
     shell.exec(
-        `${CONVERT} ${stat}/storage/ar-${unifiedFileName}.glb ${stat}/storage/ar-${unifiedFileName}.usdz -metersPerUnit 1`
+        `${process.env.CONVERT} ${stat}/storage/ar-${unifiedFileName}.glb ${stat}/storage/ar-${unifiedFileName}.usdz -metersPerUnit 1`
     );
     res.json({ name: `${unifiedFileName}` });
     unifiedFileName = '';
