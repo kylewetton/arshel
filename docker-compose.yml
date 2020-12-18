@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - uploaded_files:/usr/src/app/uploads
+      - uploaded_files:/usr/src/app/build/uploads
   gltf-to-usdz-service:
     image: marlon360/gltf-to-usdz-service:latest
     volumes:

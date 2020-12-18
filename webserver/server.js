@@ -14,7 +14,7 @@ let unifiedFileName = '';
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, `./uploads`);
+    cb(null, `./${stat}/uploads`);
   },
   filename(req, file, cb) {
     unifiedFileName = Date.now();
@@ -34,8 +34,8 @@ app.post('/generate-ar', upload.single('file'), (req, res) => {
 }).then((result) => {
     console.log(result.data);
     unifiedFileName = '';
+    res.json({ name: `${result.data.outputPath}` });
     
-    res.send({name: result.data.outputPath});
 }).catch((error) => {
     res.send({success: false, error: "Error while connecting to gltf-to-usdz-service"});
 })
@@ -47,7 +47,7 @@ app.get('/', function (req, res) {
 });
 
 setInterval(() => {
-  const remove = findRemoveSync(`./uploads`, {
+  const remove = findRemoveSync(`./${stat}/uploads`, {
     age: { seconds: 600 },
     limit: 100,
     extensions:  ['.glb', '.gltf', '.usdz']

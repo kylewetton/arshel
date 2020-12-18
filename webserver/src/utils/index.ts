@@ -3,8 +3,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
 
 
-const debugMode = process.env.NODE_ENV === 'development';
-const debugIP = process.env.REACT_APP_IPADD;
+const debugMode = true;
+const debugIP = '192.168.1.2';
 const binaryExport = true;
 
 /**

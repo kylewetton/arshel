@@ -118,7 +118,7 @@ function App() {
       .then(
         (file) => generateAr((file as Object3D))
           .then((data) => {
-            const url = `storage/ar-${(data as ResponseInterface).name}.usdz`;
+            const url = `uploads/${(data as ResponseInterface).name}`;
             handleDeliverAr(url);
           })
       );
