@@ -1,0 +1,16 @@
+version: "3.8"
+
+volumes:
+  uploaded_files:
+
+services:
+  webserver:
+    build: webserver/
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploaded_files:/usr/src/app/uploads
+  gltf-to-usdz-service:
+    image: marlon360/gltf-to-usdz-service:latest
+    volumes:
+      - uploaded_files:/usr/app

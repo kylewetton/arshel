@@ -1,11 +1,11 @@
-import { TextureLoader, MeshBasicMaterial, MeshPhongMaterial, Mesh, Object3D } from 'three';
+import { TextureLoader, MeshBasicMaterial, MeshPhongMaterial, Mesh, Object3D, RepeatWrapping } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
 
 
 const debugMode = process.env.NODE_ENV === 'development';
 const debugIP = process.env.REACT_APP_IPADD;
-const binaryExport = false;
+const binaryExport = true;
 
 /**
  * If this has issues, it may be worth looking into it here
@@ -71,7 +71,7 @@ export const generateAr = (scene: Object3D) => {
  */
 
 export const generateQr = (file: string) => {
-    const base = debugMode ? `http://${debugIP}:3000` : window.location.origin;
+    const base = debugMode ? `http://${debugIP}:8080` : window.location.origin;
     const api = `https://api.qrserver.com/v1/create-qr-code/?format=svg&color=E11D48&size=600x600&data=${base}/${file}`;
     return api;
 }
@@ -94,6 +94,8 @@ export const compileGlb = (url: string, width: number, height: number, floorHeig
     return new Promise((res, rej) => {
         tLoader.load(url, (texture) => {
             texture.flipY = true;
+            texture.wrapS = RepeatWrapping;
+            texture.wrapT = RepeatWrapping;
             const artworkMaterial = new MeshBasicMaterial({ map: texture });
             const frameMaterial = new MeshPhongMaterial({ color: frameColor });
             const frameParts = ['bottom', 'top', 'left', 'right', 'corner_tl', 'corner_tr', 'corner_bl', 'corner_br'];
