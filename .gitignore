@@ -1,16 +1,16 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+/webserver/node_modules
 /.pnp
 .pnp.js
-.eslintcache
+webserver/.eslintcache
 
 # testing
 /coverage
 
 # production
-/build
+webserver/build
 
 # misc
 .DS_Store
